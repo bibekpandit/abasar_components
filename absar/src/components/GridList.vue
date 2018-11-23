@@ -1,6 +1,7 @@
 <template>
   <div>
     <div style="margin-top: 100px"></div>
+    <h2>{{ test }}</h2>
     <h2>{{ clickedCard }}</h2>
     <v-layout>
     <v-flex xs12 sm6 offset-sm3>
@@ -33,8 +34,20 @@
 </template>
 
 <script>
+import db from '@/firebase/init.js'
+
 export default {
+  async created() {
+    const ref = db.collection('Tests').doc('BEXbfP0ewRJtYCy4hy5Q')
+    const fetchedDoc = await ref.get() 
+    if (fetchedDoc.exists) {
+      const data = fetchedDoc.data() 
+      console.log('data =', data)
+      this.test = data.value 
+    }
+  },
 	data: () => ({
+    test: 'test',
 		size: 'md',
 		items: [
 			{ text: 'Extra small (2px)', value: 'xs' },
